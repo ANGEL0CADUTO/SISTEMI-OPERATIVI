@@ -33,16 +33,13 @@ void main(){
     pthread_attr_t attr; /*Creo una variabile attributi*/
 
     printf("Sono il thread padre, inizio a creare thread\n");
-
     while(current_child < NUM_CPU){ 
 
         CPU_ZERO(&cpuset); /*Resetto la bitmask*/
-        CPU_SET(current_child&NUM_CPU, &cpuset); /*Imposto a 1 la cpu affinity*/
+        CPU_SET(current_child, &cpuset); /*Imposto a 1 la cpu affinity*/
 
-        /*
-		 * Inizializza una struttura di attributi per la creazione di un
-		 * thread, che passiamo alla funzione "pthread_create" per impostare
-		 * alcuni parametri dello stato dell'esecuzione del thread. */
+        /* Inizializza una struttura di attributi per la creazione di un thread, che passiamo 
+        alla funzione "pthread_create" per impostare alcuni parametri dello stato dell'esecuzione del thread. */
         if (pthread_attr_init(&attr)) {
 			printf("Error. Unable to initialize thread attributes.\n");
 			exit(1);
@@ -63,14 +60,11 @@ void main(){
 
         printf("Il figlio %ld è stato creato, mi metto in attesa della sua terminaizone\n",thread_ids[current_child]);
 
-        /*
-		 * Quando non è più richiesta, e per un fututo riutilizzo, la
-		 * struttura di attributi per la creazione del thread deve
-		 * essere distrutta come segue. Questo non ha effetto sui
-		 * threads che sono stati creati passandogli tale struttura.*/
+        /* Quando non è più richiesta, e per un fututo riutilizzo, la struttura di attributi per la creazione del thread deve
+		 essere distrutta come segue. Questo non ha effetto sui threads che sono stati creati passandogli tale struttura.*/
 		if (pthread_attr_destroy(&attr)) {
 			printf("Warning. Unable to destroy thread attributes.\n");
-		}
+		} /* Non so se serve oppure no*/
         
         /*Attendo la terminazione del thread creato*/
         if(pthread_join(thread_ids[current_child],&status) != 0){
