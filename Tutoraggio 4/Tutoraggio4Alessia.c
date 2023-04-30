@@ -25,7 +25,7 @@ void main(){
     /*INIZIALIZZAZIONE*/
     int current_child = 0; /*Contatore del numero di figli effettuato*/
     void* status; /*Stato di ritorno del figlio che ha terminato*/
-    int stack_size = 8388608;
+    int stack_size = 8388608; /*non so a cosa serva quelli del tutoraggio l'hanno messo*/
 
     pthread_t thread_ids[NUM_CPU];  /*Array non allocato degli ids dei thread creati*/
     cpu_set_t cpuset; /*bitmask affinità cpu*/
@@ -42,8 +42,7 @@ void main(){
         /*
 		 * Inizializza una struttura di attributi per la creazione di un
 		 * thread, che passiamo alla funzione "pthread_create" per impostare
-		 * alcuni parametri dello stato dell'esecuzione del thread.
-		 */
+		 * alcuni parametri dello stato dell'esecuzione del thread. */
         if (pthread_attr_init(&attr)) {
 			printf("Error. Unable to initialize thread attributes.\n");
 			exit(1);
@@ -55,7 +54,6 @@ void main(){
         if(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &cpuset) != 0){
            perror("Error in Pthread Affinity"); 
         }
-
         /*Fine settaggio struttura attributi*/
 
         /*Creo Thread*/
@@ -69,8 +67,7 @@ void main(){
 		 * Quando non è più richiesta, e per un fututo riutilizzo, la
 		 * struttura di attributi per la creazione del thread deve
 		 * essere distrutta come segue. Questo non ha effetto sui
-		 * threads che sono stati creati passandogli tale struttura.
-		 */
+		 * threads che sono stati creati passandogli tale struttura.*/
 		if (pthread_attr_destroy(&attr)) {
 			printf("Warning. Unable to destroy thread attributes.\n");
 		}
